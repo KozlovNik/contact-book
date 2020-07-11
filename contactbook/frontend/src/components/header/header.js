@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <header className="header">
             <h1 className="header__element header__element--heading">
-                <i class="fa fa-address-book" aria-hidden="true"></i>
+                <i className="fa fa-address-book" aria-hidden="true"></i>
                 Книга контактов
             </h1>
             <ul className="header__element header-auth-list">
