@@ -1,0 +1,32 @@
+.header {
+    font-family: Roboto, sans-serif;
+    color: white;
+    background-color: rgb(108, 108, 146);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.header__element {
+    margin: 0;
+    padding: 0;
+    padding-left: 50px;
+    font-weight: bold;
+    min-height: 80px;
+    line-height: 80px;
+    align-self: center;
+}
+
+.header-auth-list {
+    padding-right: 50px;
+    list-style: none;
+}
+
+.header-auth-list__element {
+    display: inline-block;
+    height: 80px;
+    line-height: 80px;
+    padding:0;
+    margin:0;
+    padding-left: 5px
+}
