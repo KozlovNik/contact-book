@@ -7,7 +7,7 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';
 import RegisterForm from '../register-page/register-page';
 import { getUser } from '../../redux/actions';
-import HomePage from '../home-page/home-page'
+import HomePage from '../home-page/home-page';
 
 const App = ({ isAuthenticated, getUser }) => {
   useEffect(() => {

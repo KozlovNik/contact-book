@@ -12,7 +12,7 @@ const Header = ({ isAuthenticated, logout }) => {
     let value = isAuthenticated
         ? (
             <li className="header-auth-list__element">
-                <a href="#" onClick={handleLogoutClick}>Выйти</a>
+                <button onClick={handleLogoutClick}>Выйти</button>
             </li>
         )
         : (

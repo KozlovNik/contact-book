@@ -27,8 +27,7 @@ const RegisterPage = ({ register }) => {
 
     const handleLoginFormSubmit = (e) => {
         e.preventDefault()
-        register(formData)
-        history.push('/')
+        register(formData, () => { history.push('/') })
     }
 
     return (

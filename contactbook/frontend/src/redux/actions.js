@@ -16,16 +16,12 @@ import {
 const link = 'http://127.0.0.1:8000/api/accounts/';
 
 export const getUser = () => (dispatch, getState) => {
-    dispatch({
-        type: GET_USER_LOADING
-    })
+    dispatch({ type: GET_USER_LOADING })
 
     const token = getState().auth.token
 
     if (!token) {
-        return dispatch({
-            type: GET_USER_FAILURE
-        })
+        return dispatch({ type: GET_USER_FAILURE })
     }
     fetch(`${link}user/`, {
         method: 'POST',
@@ -34,29 +30,22 @@ export const getUser = () => (dispatch, getState) => {
             'Authorization': `Token ${token}`,
         }
     })
-        .then(res => {
-            return res.json()
-                .then((data) => {
-                    if (res.ok) {
-                        dispatch({
-                            type: GET_USER_LOADED,
-                            payload: data
-                        })
-                    } else {
-                        dispatch({
-                            type: GET_USER_FAILURE,
-                            payload: data
-                        })
-                    }
-                })
+        .then(async res => {
+            const data = await res.json();
+            if (res.ok) {
+                dispatch({ type: GET_USER_LOADED, payload: data });
+            }
+            else {
+                dispatch({
+                    type: GET_USER_FAILURE, payload: data
+                });
+            }
         })
         .then(data => { console.log(data) })
 }
 
-export const loginUser = (data) => (dispatch) => {
-    dispatch({
-        type: LOGIN_FETCH
-    })
+export const loginUser = (data, cb) => dispatch => {
+    dispatch({ type: LOGIN_FETCH })
     fetch(`${link}login/`, {
         method: 'POST',
         headers: {
@@ -64,29 +53,21 @@ export const loginUser = (data) => (dispatch) => {
         },
         body: JSON.stringify(data)
     })
-        .then(res => {
-            return res.json()
-                .then((data) => {
-                    if (res.ok) {
-                        localStorage.setItem('token', data.token)
-                        dispatch({
-                            type: LOGIN_SUCCESS,
-                            payload: data
-                        })
-                        
-                    } else {
-                        dispatch({
-                            type: LOGIN_FAILURE,
-                            payload: data
-                        })
-                    }
-                })
+        .then(async res => {
+            const data = await res.json();
+            if (res.ok) {
+                localStorage.setItem('token', data.token)
+                dispatch({ type: LOGIN_SUCCESS, payload: data })
+
+            } else {
+                dispatch({ type: LOGIN_FAILURE, payload: data })
+            }
         })
-        .then(data => { console.log(data) })
+        .catch()
 }
 
 
-export const register = (data) => dispatch => {
+export const register = data => dispatch => {
     dispatch({
         type: REGISTER_FETCH
     })
@@ -97,18 +78,16 @@ export const register = (data) => dispatch => {
         },
         body: JSON.stringify(data)
     })
-        .then((res) => {
-            return res.json()
-                .then((data) => {
-                    if (res.ok) {
-                        dispatch({
-                            type: REGISTER_SUCCESS,
-                            payload: data
-                        })
-                    }
-                })
+        .then(async res => {
+            const data = await res.json();
+            if (res.ok) {
+                dispatch({
+                    type: REGISTER_SUCCESS,
+                    payload: data
+                });
+                console.log('what the fuck')
+            }
         })
-        .then(data => { console.log(data) })
 }
 
 export const logout = () => (dispatch, getState) => {
@@ -120,12 +99,9 @@ export const logout = () => (dispatch, getState) => {
             'Authorization': `token ${token}`
         },
     })
-        .then((res) => {
-            console.log(res)
+        .then(res => {
             if (res.ok) {
-                dispatch({
-                    type: LOGOUT_SUCCESS
-                })
+                dispatch({ type: LOGOUT_SUCCESS })
             }
         })
 }
