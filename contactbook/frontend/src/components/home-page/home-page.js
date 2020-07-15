@@ -21,11 +21,11 @@ const HomePage = () => {
                 <h3>Тип контакта</h3>
                 <label className="home-page-form__label">
                     Личный
-                    <input type="radio" name="contact-type" />
+                    <input type="radio" name="contact_type" />
                 </label>
                 <label>
                     Рабочий
-                    <input type="radio" name="contact-type" />
+                    <input type="radio" name="contact_type" />
                 </label>
             </form>
             <div className="home-page__el">
