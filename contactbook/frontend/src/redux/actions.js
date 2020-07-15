@@ -60,6 +60,7 @@ export const loginUser = (data, cb) => dispatch => {
                 dispatch({ type: LOGIN_SUCCESS, payload: data })
 
             } else {
+                console.log(data);
                 dispatch({ type: LOGIN_FAILURE, payload: data })
             }
         })

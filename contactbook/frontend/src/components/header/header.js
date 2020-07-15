@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../redux/actions';
 
+
 const Header = ({ isAuthenticated, logout }) => {
+
     const handleLogoutClick = (e) => {
         e.preventDefault();
         logout();
@@ -27,6 +29,7 @@ const Header = ({ isAuthenticated, logout }) => {
         )
     return (
         <header className="header">
+            
             <h1 className="header__element header__element--heading">
                 <i className="fa fa-address-book" aria-hidden="true"></i>
                 Книга контактов
