@@ -9,11 +9,17 @@ import {
     GET_USER_LOADED,
     GET_USER_FAILURE,
     LOGOUT_SUCCESS,
-    LOGOUT_FAILURE
+    LOGOUT_FAILURE,
+    ADD_CONTACT_FAILURE,
+    ADD_CONTACT_SUCCESS,
+    ADD_CONTACT_LOADING,
+    GET_CONTACTS_FAILURE,
+    GET_CONTACTS_SUCCESS,
+    GET_CONTACTS_LOADING
 } from '../redux/action-types';
 
 
-const link = 'http://127.0.0.1:8000/api/accounts/';
+const link = 'http://127.0.0.1:8000/api/';
 
 export const getUser = () => (dispatch, getState) => {
     dispatch({ type: GET_USER_LOADING })
@@ -23,7 +29,7 @@ export const getUser = () => (dispatch, getState) => {
     if (!token) {
         return dispatch({ type: GET_USER_FAILURE })
     }
-    fetch(`${link}user/`, {
+    fetch(`${link}accounts/user/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -41,12 +47,12 @@ export const getUser = () => (dispatch, getState) => {
                 });
             }
         })
-        .then(data => { console.log(data) })
+    // .then(data => { console.log(data) })
 }
 
 export const loginUser = (data, cb) => dispatch => {
     dispatch({ type: LOGIN_FETCH })
-    fetch(`${link}login/`, {
+    fetch(`${link}accounts/login/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -72,7 +78,7 @@ export const register = data => dispatch => {
     dispatch({
         type: REGISTER_FETCH
     })
-    fetch(`${link}register/`, {
+    fetch(`${link}accounts/register/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -93,7 +99,7 @@ export const register = data => dispatch => {
 
 export const logout = () => (dispatch, getState) => {
     const token = localStorage.getItem('token')
-    fetch(`${link}logout/`, {
+    fetch(`${link}accounts/logout/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -103,6 +109,65 @@ export const logout = () => (dispatch, getState) => {
         .then(res => {
             if (res.ok) {
                 dispatch({ type: LOGOUT_SUCCESS })
+            }
+        })
+}
+
+
+export const getContacts = () => (dispatch, getState) => {
+    dispatch({ type: GET_CONTACTS_LOADING })
+
+    const token = getState().auth.token
+
+    if (!token) {
+        return dispatch({ type: GET_CONTACTS_FAILURE })
+    }
+    fetch(`${link}contacts/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+        }
+    })
+        .then(async res => {
+            const data = await res.json();
+            if (res.ok) {
+                dispatch({ type: GET_CONTACTS_SUCCESS, payload: data });
+            }
+            else {
+                dispatch({
+                    type: GET_USER_FAILURE, payload: data
+                });
+            }
+        })
+}
+
+export const addContact = (data) => (dispatch, getState) => {
+    console.log(data);
+    dispatch({ type: ADD_CONTACT_LOADING })
+
+    const token = getState().auth.token;
+
+    if (!token) {
+        return dispatch({ type: ADD_CONTACT_FAILURE })
+    }
+    fetch(`${link}contacts/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify(data)
+    })
+        .then(async res => {
+            const data = await res.json();
+            if (res.ok) {
+                dispatch({ type: ADD_CONTACT_SUCCESS, payload: data });
+            }
+            else {
+                dispatch({
+                    type: ADD_CONTACT_FAILURE, payload: data
+                });
             }
         })
 }
