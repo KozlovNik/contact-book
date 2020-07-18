@@ -3,12 +3,19 @@ import {
     ADD_CONTACT_LOADING,
     ADD_CONTACT_SUCCESS,
     GET_CONTACTS_LOADING,
-    GET_CONTACTS_SUCCESS
+    GET_CONTACTS_SUCCESS,
+    UPLOAD_CONTACT_ITEM,
+    CLEAR_CONTACT_ITEM,
+    DELETE_CONTACT_SUCCESS,
+    UPDATE_CONTACT_SUCCESS,
+    UPDATE_CONTACT_FAILURE
 } from '../action-types';
 
 const initialState = {
     contactList: [],
-    isLoading: false
+    isLoading: false,
+    showEdit: false,
+    id: null
 }
 
 export default function contacts(state = initialState, action) {
@@ -29,6 +36,45 @@ export default function contacts(state = initialState, action) {
                 ...state,
                 contactList: [action.payload, ...state.contactList],
                 isLoading: false
+            }
+        case UPLOAD_CONTACT_ITEM:
+
+            return {
+                ...state,
+                showEdit: true,
+                id: action.payload
+            }
+        case CLEAR_CONTACT_ITEM:
+
+            return {
+                ...state,
+                showEdit: false,
+                id: null
+            }
+        case DELETE_CONTACT_SUCCESS:
+
+            return {
+                ...state,
+                contactList: state.contactList.filter(el => {
+                    return el.id !== action.payload
+                }),
+                showEdit: false,
+                id: null
+            }
+        case UPDATE_CONTACT_SUCCESS:
+
+            const newArr = state.contactList.map(el => {
+                if (el.id === action.payload.id) {
+                    return action.payload
+                }
+                return el
+            })
+
+            return {
+                ...state,
+                contactList: newArr,
+                showEdit: false,
+                id: null
             }
         default:
             return state;

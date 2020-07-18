@@ -25,3 +25,8 @@
     margin: 10px 0;
     height: 35px;
 }
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+}

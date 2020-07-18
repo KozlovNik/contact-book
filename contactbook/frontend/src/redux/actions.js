@@ -15,7 +15,13 @@ import {
     ADD_CONTACT_LOADING,
     GET_CONTACTS_FAILURE,
     GET_CONTACTS_SUCCESS,
-    GET_CONTACTS_LOADING
+    GET_CONTACTS_LOADING,
+    UPLOAD_CONTACT_ITEM,
+    CLEAR_CONTACT_ITEM,
+    DELETE_CONTACT_FAILURE,
+    DELETE_CONTACT_SUCCESS,
+    UPDATE_CONTACT_FAILURE,
+    UPDATE_CONTACT_SUCCESS
 } from '../redux/action-types';
 
 
@@ -50,7 +56,7 @@ export const getUser = () => (dispatch, getState) => {
     // .then(data => { console.log(data) })
 }
 
-export const loginUser = (data, cb) => dispatch => {
+export const loginUser = (data) => dispatch => {
     dispatch({ type: LOGIN_FETCH })
     fetch(`${link}accounts/login/`, {
         method: 'POST',
@@ -64,7 +70,6 @@ export const loginUser = (data, cb) => dispatch => {
             if (res.ok) {
                 localStorage.setItem('token', data.token)
                 dispatch({ type: LOGIN_SUCCESS, payload: data })
-
             } else {
                 console.log(data);
                 dispatch({ type: LOGIN_FAILURE, payload: data })
@@ -92,7 +97,6 @@ export const register = data => dispatch => {
                     type: REGISTER_SUCCESS,
                     payload: data
                 });
-                console.log('what the fuck')
             }
         })
 }
@@ -117,7 +121,7 @@ export const logout = () => (dispatch, getState) => {
 export const getContacts = () => (dispatch, getState) => {
     dispatch({ type: GET_CONTACTS_LOADING })
 
-    const token = getState().auth.token
+    const token = localStorage.getItem('token')
 
     if (!token) {
         return dispatch({ type: GET_CONTACTS_FAILURE })
@@ -142,7 +146,7 @@ export const getContacts = () => (dispatch, getState) => {
         })
 }
 
-export const addContact = (data) => (dispatch, getState) => {
+export const addContact = data => (dispatch, getState) => {
     console.log(data);
     dispatch({ type: ADD_CONTACT_LOADING })
 
@@ -161,12 +165,83 @@ export const addContact = (data) => (dispatch, getState) => {
     })
         .then(async res => {
             const data = await res.json();
+            console.log(data);
             if (res.ok) {
                 dispatch({ type: ADD_CONTACT_SUCCESS, payload: data });
             }
             else {
                 dispatch({
                     type: ADD_CONTACT_FAILURE, payload: data
+                });
+            }
+        })
+}
+
+export const uploadContactItem = (id) => {
+    return {
+        type: UPLOAD_CONTACT_ITEM,
+        payload: id
+    }
+}
+
+export const clearContactItem = () => {
+    return {
+        type: CLEAR_CONTACT_ITEM
+    }
+}
+
+
+export const deleteContact = id => (dispatch, getState) => {
+    // dispatch({ type: ADD_CONTACT_LOADING })
+
+    const token = getState().auth.token;
+
+    if (!token) {
+        return dispatch({ type: DELETE_CONTACT_FAILURE })
+    }
+    fetch(`${link}contacts/${id}/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+        },
+    })
+        .then(res => {
+            if (res.ok) {
+                dispatch({ type: DELETE_CONTACT_SUCCESS, payload: id });
+            }
+            else {
+                dispatch({
+                    type: ADD_CONTACT_FAILURE
+                });
+            }
+        })
+}
+
+
+export const updateContact = data => (dispatch, getState) => {
+    const token = getState().auth.token;
+
+    if (!token) {
+        return dispatch({ type: UPDATE_CONTACT_FAILURE })
+    }
+    fetch(`${link}contacts/${data.id}/`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify(data)
+    })
+        .then(async res => {
+            const data = await res.json();
+            console.log(data);
+            if (res.ok) {
+                dispatch({ type: UPDATE_CONTACT_SUCCESS, payload: data });
+            }
+            else {
+                dispatch({
+                    type: UPDATE_CONTACT_FAILURE, payload: data
                 });
             }
         })

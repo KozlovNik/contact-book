@@ -2,12 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 
 choices = [
-    ('personal', 'personal'),
-    ('professional', 'professional'),
+    ('личный', 'личный'),
+    ('рабочий', 'рабочий'),
 ]
 
 
 class Contact(models.Model):
+
+    class Meta:
+        ordering = ['-id']
+
     user = models.ForeignKey(
         User,
         related_name='contacts',
