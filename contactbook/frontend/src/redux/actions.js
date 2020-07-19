@@ -27,10 +27,10 @@ import {
 
 const link = 'http://127.0.0.1:8000/api/';
 
-export const getUser = () => (dispatch, getState) => {
+export const getUser = () => dispatch => {
     dispatch({ type: GET_USER_LOADING })
 
-    const token = getState().auth.token
+    const token = localStorage.getItem('token');
 
     if (!token) {
         return dispatch({ type: GET_USER_FAILURE })
@@ -45,18 +45,15 @@ export const getUser = () => (dispatch, getState) => {
         .then(async res => {
             const data = await res.json();
             if (res.ok) {
-                dispatch({ type: GET_USER_LOADED, payload: data });
+                dispatch({ type: GET_USER_LOADED, payload: data })
             }
             else {
-                dispatch({
-                    type: GET_USER_FAILURE, payload: data
-                });
+                dispatch({ type: GET_USER_FAILURE, payload: data })
             }
         })
-    // .then(data => { console.log(data) })
 }
 
-export const loginUser = (data) => dispatch => {
+export const loginUser = data => dispatch => {
     dispatch({ type: LOGIN_FETCH })
     fetch(`${link}accounts/login/`, {
         method: 'POST',
@@ -71,7 +68,6 @@ export const loginUser = (data) => dispatch => {
                 localStorage.setItem('token', data.token)
                 dispatch({ type: LOGIN_SUCCESS, payload: data })
             } else {
-                console.log(data);
                 dispatch({ type: LOGIN_FAILURE, payload: data })
             }
         })
@@ -79,7 +75,7 @@ export const loginUser = (data) => dispatch => {
 }
 
 
-export const register = data => dispatch => {
+export const register = (data, cb) => dispatch => {
     dispatch({
         type: REGISTER_FETCH
     })
@@ -93,15 +89,14 @@ export const register = data => dispatch => {
         .then(async res => {
             const data = await res.json();
             if (res.ok) {
-                dispatch({
-                    type: REGISTER_SUCCESS,
-                    payload: data
-                });
+                localStorage.setItem('token', data.token)
+                cb()
+                dispatch({ type: REGISTER_SUCCESS, payload: data })
             }
         })
 }
 
-export const logout = () => (dispatch, getState) => {
+export const logout = () => dispatch => {
     const token = localStorage.getItem('token')
     fetch(`${link}accounts/logout/`, {
         method: 'POST',
@@ -118,10 +113,10 @@ export const logout = () => (dispatch, getState) => {
 }
 
 
-export const getContacts = () => (dispatch, getState) => {
+export const getContacts = () => dispatch => {
     dispatch({ type: GET_CONTACTS_LOADING })
 
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
 
     if (!token) {
         return dispatch({ type: GET_CONTACTS_FAILURE })
@@ -136,21 +131,18 @@ export const getContacts = () => (dispatch, getState) => {
         .then(async res => {
             const data = await res.json();
             if (res.ok) {
-                dispatch({ type: GET_CONTACTS_SUCCESS, payload: data });
+                dispatch({ type: GET_CONTACTS_SUCCESS, payload: data })
             }
             else {
-                dispatch({
-                    type: GET_USER_FAILURE, payload: data
-                });
+                dispatch({ type: GET_USER_FAILURE, payload: data })
             }
         })
 }
 
-export const addContact = data => (dispatch, getState) => {
-    console.log(data);
+export const addContact = data => dispatch => {
     dispatch({ type: ADD_CONTACT_LOADING })
 
-    const token = getState().auth.token;
+    const token = localStorage.getItem('token');
 
     if (!token) {
         return dispatch({ type: ADD_CONTACT_FAILURE })
@@ -165,36 +157,23 @@ export const addContact = data => (dispatch, getState) => {
     })
         .then(async res => {
             const data = await res.json();
-            console.log(data);
             if (res.ok) {
                 dispatch({ type: ADD_CONTACT_SUCCESS, payload: data });
             }
             else {
-                dispatch({
-                    type: ADD_CONTACT_FAILURE, payload: data
-                });
+                dispatch({ type: ADD_CONTACT_FAILURE, payload: data });
             }
         })
 }
 
-export const uploadContactItem = (id) => {
-    return {
-        type: UPLOAD_CONTACT_ITEM,
-        payload: id
-    }
-}
+export const uploadContactItem = id => ({ type: UPLOAD_CONTACT_ITEM, payload: id })
 
-export const clearContactItem = () => {
-    return {
-        type: CLEAR_CONTACT_ITEM
-    }
-}
+export const clearContactItem = () => ({ type: CLEAR_CONTACT_ITEM })
 
 
-export const deleteContact = id => (dispatch, getState) => {
-    // dispatch({ type: ADD_CONTACT_LOADING })
+export const deleteContact = id => dispatch => {
 
-    const token = getState().auth.token;
+    const token = localStorage.getItem('token');
 
     if (!token) {
         return dispatch({ type: DELETE_CONTACT_FAILURE })
@@ -208,19 +187,17 @@ export const deleteContact = id => (dispatch, getState) => {
     })
         .then(res => {
             if (res.ok) {
-                dispatch({ type: DELETE_CONTACT_SUCCESS, payload: id });
+                dispatch({ type: DELETE_CONTACT_SUCCESS, payload: id })
             }
             else {
-                dispatch({
-                    type: ADD_CONTACT_FAILURE
-                });
+                dispatch({ type: ADD_CONTACT_FAILURE })
             }
         })
 }
 
 
-export const updateContact = data => (dispatch, getState) => {
-    const token = getState().auth.token;
+export const updateContact = data => dispatch => {
+    const token = localStorage.getItem('token');
 
     if (!token) {
         return dispatch({ type: UPDATE_CONTACT_FAILURE })
@@ -235,14 +212,11 @@ export const updateContact = data => (dispatch, getState) => {
     })
         .then(async res => {
             const data = await res.json();
-            console.log(data);
             if (res.ok) {
-                dispatch({ type: UPDATE_CONTACT_SUCCESS, payload: data });
+                dispatch({ type: UPDATE_CONTACT_SUCCESS, payload: data })
             }
             else {
-                dispatch({
-                    type: UPDATE_CONTACT_FAILURE, payload: data
-                });
+                dispatch({ type: UPDATE_CONTACT_FAILURE, payload: data })
             }
         })
 }

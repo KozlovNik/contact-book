@@ -8,9 +8,7 @@ import EditForm from '../forms/edit-form';
 
 const HomePage = ({ getContacts, contacts, showEdit, isAuthenticated }) => {
     useEffect(() => {
-        if (isAuthenticated) {
-            getContacts()
-        }
+        if (isAuthenticated) {getContacts()}
     }, [getContacts, isAuthenticated])
 
     return (
@@ -20,16 +18,19 @@ const HomePage = ({ getContacts, contacts, showEdit, isAuthenticated }) => {
                 <input
                     placeholder="Фильтр"
                     className="home-page-form__input" />
-                <div>У вас пока нет добавленных контактов</div>
+
                 {
-                    <ul className="contact-list">
-                        {contacts.map(item =>
-                            <ContactItem key={item.id} {...item} />)}
-                    </ul>
+                    contacts.length > 0
+                        ? (
+                            <ul className="contact-list">
+                                {contacts.map(item =>
+                                    <ContactItem key={item.id} {...item} />)}
+                            </ul>
+                        )
+                        : <div>У вас пока нет добавленных контактов</div>
                 }
 
             </div>
-
         </div>
     );
 }

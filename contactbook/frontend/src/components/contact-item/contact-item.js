@@ -3,7 +3,7 @@ import './contact-item.css';
 import { connect } from 'react-redux';
 import { uploadContactItem, deleteContact } from '../../redux/actions';
 
-const ContactItem = (props) => {
+const ContactItem = props => {
     const { id, name, email, phone, contact_type, uploadContactItem, deleteContact } = props;
 
     const handleEditButtonClick = () => {

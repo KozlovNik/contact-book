@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import MainWrapper from '../wrappers/wrappers';
-import './register-page.css';
+
 import { connect } from 'react-redux';
 import { register } from '../../redux/actions';
+
 import { useHistory } from 'react-router-dom';
 
+import MainWrapper from '../wrappers/wrappers';
+import './register-page.css';
 
 
 const RegisterPage = ({ register }) => {
@@ -25,7 +27,7 @@ const RegisterPage = ({ register }) => {
         })
     }
 
-    const handleLoginFormSubmit = (e) => {
+    const handleLoginFormSubmit = e => {
         e.preventDefault()
         register(formData, () => { history.push('/') })
     }
@@ -49,8 +51,8 @@ const RegisterPage = ({ register }) => {
                         <div className="login-form__input-name" >Почта</div>
                         <input
                             className="login-form__input"
-                            type="text"
-                            name="username"
+                            type="email"
+                            name="email"
                             onChange={handleInputChange} />
                     </label>
                     <label className="login-form__label">

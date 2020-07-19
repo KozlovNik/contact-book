@@ -14,16 +14,16 @@ const Header = ({ isAuthenticated, logout }) => {
     let value = isAuthenticated
         ? (
             <li className="header-auth-list__element">
-                <button onClick={handleLogoutClick}>Выйти</button>
+                <button className="header-auth-list__button"  onClick={handleLogoutClick}>Выйти</button>
             </li>
         )
         : (
             <Fragment>
                 <li className="header-auth-list__element">
-                    <Link to="/register">Регистрация</Link>
+                    <Link className="header-auth-list__link" to="/register">Регистрация</Link>
                 </li>
                 <li className="header-auth-list__element">
-                    <Link to="/login">Войти</Link>
+                    <Link className="header-auth-list__link" to="/login">Войти</Link>
                 </li>
             </Fragment>
         )

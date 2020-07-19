@@ -35,7 +35,8 @@ export default function auth(state = initialState, action) {
                 ...state,
                 isLoading: false,
                 isAuthenticated: true,
-                user: action.payload.user
+                user: action.payload.user,
+                token: action.payload.token
             }
         case LOGIN_FAILURE:
         case REGISTER_FAILURE:

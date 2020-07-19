@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import "./forms.css";
+
 import { connect } from 'react-redux';
-import { uploadContactItem, clearContactItem, updateContact } from '../../redux/actions';
+import { clearContactItem, updateContact } from '../../redux/actions';
+
+import "./forms.css";
 
 const inputFields = {
     name: '',
@@ -18,8 +20,6 @@ const EditForm = (props) => {
     }, [name, email, id, phone, contact_type])
     const handleFormSubmit = e => {
         e.preventDefault();
-        // uploadContactItem(inputs);
-        // setInputs()
     }
     const handleInputChange = e => {
         setInputs({
@@ -28,7 +28,7 @@ const EditForm = (props) => {
         })
     }
 
-    const handleEditButtonClick = (e) => {
+    const handleEditButtonClick = e => {
         e.preventDefault()
         updateContact(inputs)
     }
@@ -61,24 +61,37 @@ const EditForm = (props) => {
                 required type="text"
                 className="home-page-form__input"
                 value={inputs.phone}
-                placeholder="Номер телефона" name="phone"
+                placeholder="Номер телефона"
+                name="phone"
                 onChange={handleInputChange} />
             <h3>Тип контакта</h3>
             <label className="home-page-form__label">
                 Личный
                     <input
-                    type="radio" name="contact_type" value="личный"
+                    type="radio"
+                    name="contact_type"
+                    value="личный"
                     checked={inputs.contact_type === 'личный'}
                     onChange={handleInputChange} />
             </label>
             <label>Рабочий
                     <input
-                    type="radio" name="contact_type"
+                    type="radio"
+                    name="contact_type"
                     checked={inputs.contact_type === 'рабочий'}
-                    value="рабочий" onChange={handleInputChange} />
+                    value="рабочий"
+                    onChange={handleInputChange} />
             </label>
-            <button onClick={handleEditButtonClick}>Редактировать контакт</button>
-            <button onClick={handleClearButton}>Очистить</button>
+            <button
+                className="home-page-form__button"
+                onClick={handleEditButtonClick}>
+                Редактировать контакт
+            </button>
+            <button
+                className="home-page-form__button"
+                onClick={handleClearButton}>
+                Очистить
+            </button>
         </form>
     )
 }

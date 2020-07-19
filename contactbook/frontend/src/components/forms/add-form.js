@@ -63,7 +63,7 @@ const AddForm = ({ addContact }) => {
                     checked={inputs.contact_type === 'рабочий'}
                     value="рабочий" onChange={handleInputChange} />
             </label>
-            <button>Добавить контакт</button>
+            <button className="home-page-form__button">Добавить контакт</button>
         </form>
     )
 }
