@@ -34,8 +34,8 @@ const App = ({ getUser }) => {
 
 
 
-const mapStateToProps = ({ auth }) => ({
-  isAuthenticated: auth.isAuthenticated
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, { getUser })(App);

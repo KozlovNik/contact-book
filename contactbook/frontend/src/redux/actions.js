@@ -21,7 +21,8 @@ import {
     DELETE_CONTACT_FAILURE,
     DELETE_CONTACT_SUCCESS,
     UPDATE_CONTACT_FAILURE,
-    UPDATE_CONTACT_SUCCESS
+    UPDATE_CONTACT_SUCCESS,
+    FILTER_CONTACTS
 } from '../redux/action-types';
 
 
@@ -214,9 +215,10 @@ export const updateContact = data => dispatch => {
             const data = await res.json();
             if (res.ok) {
                 dispatch({ type: UPDATE_CONTACT_SUCCESS, payload: data })
-            }
-            else {
+            } else {
                 dispatch({ type: UPDATE_CONTACT_FAILURE, payload: data })
             }
         })
 }
+
+export const filterContacts = data => ({ type: FILTER_CONTACTS, payload: data })
