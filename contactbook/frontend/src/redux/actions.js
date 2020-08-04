@@ -25,9 +25,6 @@ import {
     FILTER_CONTACTS
 } from '../redux/action-types';
 
-
-const link = 'http://127.0.0.1:8000/api/';
-
 export const getUser = () => dispatch => {
     dispatch({ type: GET_USER_LOADING })
 
@@ -36,11 +33,11 @@ export const getUser = () => dispatch => {
     if (!token) {
         return dispatch({ type: GET_USER_FAILURE })
     }
-    fetch(`${link}accounts/user/`, {
+    fetch('/api/accounts/user/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`,
+            'Authorization': `token ${token}`,
         }
     })
         .then(async res => {
@@ -56,7 +53,7 @@ export const getUser = () => dispatch => {
 
 export const loginUser = data => dispatch => {
     dispatch({ type: LOGIN_FETCH })
-    fetch(`${link}accounts/login/`, {
+    fetch('/api/accounts/login/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -80,7 +77,7 @@ export const register = (data, cb) => dispatch => {
     dispatch({
         type: REGISTER_FETCH
     })
-    fetch(`${link}accounts/register/`, {
+    fetch('/api/accounts/register/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -99,7 +96,7 @@ export const register = (data, cb) => dispatch => {
 
 export const logout = () => dispatch => {
     const token = localStorage.getItem('token')
-    fetch(`${link}accounts/logout/`, {
+    fetch('/api/accounts/logout/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -122,7 +119,7 @@ export const getContacts = () => dispatch => {
     if (!token) {
         return dispatch({ type: GET_CONTACTS_FAILURE })
     }
-    fetch(`${link}contacts/`, {
+    fetch('/api/contacts/', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -148,7 +145,7 @@ export const addContact = data => dispatch => {
     if (!token) {
         return dispatch({ type: ADD_CONTACT_FAILURE })
     }
-    fetch(`${link}contacts/`, {
+    fetch('/api/contacts/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -179,7 +176,7 @@ export const deleteContact = id => dispatch => {
     if (!token) {
         return dispatch({ type: DELETE_CONTACT_FAILURE })
     }
-    fetch(`${link}contacts/${id}/`, {
+    fetch(`/api/contacts/${id}/`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -203,7 +200,7 @@ export const updateContact = data => dispatch => {
     if (!token) {
         return dispatch({ type: UPDATE_CONTACT_FAILURE })
     }
-    fetch(`${link}contacts/${data.id}/`, {
+    fetch(`/api/contacts/${data.id}/`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

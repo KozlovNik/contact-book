@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import "./home-page.css";
 import { connect } from 'react-redux';
 import { getContacts, addContact } from '../../redux/actions';
+
 import ContactItem from '../contact-item/contact-item';
 import AddForm from '../forms/add-form';
 import EditForm from '../forms/edit-form';
+
+import "./home-page.css";
 
 const HomePage = ({ getContacts, contacts, showEdit, isAuthenticated }) => {
 
